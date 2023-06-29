@@ -59,7 +59,9 @@ class App extends Component<any, any> {
 			returnClarifaiRequestOptions(this.state.input)
 		)
 			.then((response) => response.json())
-			.then((result) => console.log(result))
+			.then((result) =>
+				console.log(result.outputs[0].data.regions[0].region_info.bounding_box)
+			)
 			.catch((error) => console.log('error', error))
 	}
 
