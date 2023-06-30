@@ -3,6 +3,7 @@ import Navigation from './components/Navigation/Navigation.tsx'
 import Logo from './components/Logo/Logo.tsx'
 import Rank from './components/Rank/Rank.tsx'
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.tsx'
+import SignIn from './components/SignIn/SignIn.tsx'
 import FaceRecognition from './components/FaceRecognition/FaceRecognition.tsx'
 import './App.css'
 import 'tachyons'
@@ -45,6 +46,7 @@ class App extends Component<any, any> {
 			input: '',
 			imageUrl: '',
 			box: {},
+			route: 'signin',
 		}
 	}
 
@@ -83,21 +85,31 @@ class App extends Component<any, any> {
 			.catch((error) => console.log('error', error))
 	}
 
+	onRouteChange = (route) => {
+		this.setState({ route: route })
+	}
+
 	render() {
 		return (
 			<>
 				<div className={'App'}>
-					<Navigation />
-					<Logo />
-					<Rank />
-					<ImageLinkForm
-						onInputChange={this.onInputChange}
-						onButtonSubmit={this.onButtonSubmit}
-					/>
-					<FaceRecognition
-						box={this.state.box}
-						imageUrl={this.state.imageUrl}
-					/>
+					<Navigation onRouteChange={this.onRouteChange} />
+					{this.state.route === 'signin' ? (
+						<SignIn onRouteChange={this.onRouteChange} />
+					) : (
+						<div>
+							<Logo />
+							<Rank />
+							<ImageLinkForm
+								onInputChange={this.onInputChange}
+								onButtonSubmit={this.onButtonSubmit}
+							/>
+							<FaceRecognition
+								box={this.state.box}
+								imageUrl={this.state.imageUrl}
+							/>
+						</div>
+					)}
 				</div>
 			</>
 		)
