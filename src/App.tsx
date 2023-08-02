@@ -102,6 +102,28 @@ const returnClarifaiRequestOptions = (imageUrl: string): ClarifaiReturn => {
     }
 }
 
+const initialState = {
+    input: '',
+    imageUrl: '',
+    box: {
+        leftCol: 0,
+        topRow: 0,
+        rightCol: 0,
+        bottomRow: 0
+    },
+    route: 'sign-in',
+    isSignedIn: false,
+    user: {
+        id: '',
+        name: '',
+        password: '',
+        email: '',
+        entries: 0,
+        joined: new Date()
+
+    }
+}
+
 class App extends React.Component<FaceDetectProps, FaceDetectState> {
     constructor(props: FaceDetectProps) {
         super(props)
@@ -182,11 +204,13 @@ class App extends React.Component<FaceDetectProps, FaceDetectState> {
                     body: JSON.stringify({
                         id: this.state.user.id
                     })
-                }).then(result => result.json())
+                })
+                    .then(result => result.json())
                     .then(count => {
                         // @ts-ignore
                         return this.setState(Object.assign(this.state.user, {entries: count}))
                     })
+                    .catch(console.log)
                 this.displayFaceBox(this.calculateFaceLocation(result))
                 this.setState({input: ''})
             }
@@ -195,7 +219,7 @@ class App extends React.Component<FaceDetectProps, FaceDetectState> {
 
     onRouteChange = (route: string) => {
         if (route === 'sign-out') {
-            this.setState({isSignedIn: false})
+            this.setState(initialState)
         } else if (route === 'home') {
             this.setState({isSignedIn: true})
         }
